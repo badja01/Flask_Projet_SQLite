@@ -49,16 +49,6 @@ def Readfiche(post_id):
     # Rendre le template HTML et transmettre les données
     return render_template('read_data.html', data=data)
 
-@app.route('/fiche_client/<strg:post_id>')
-def Readfichenom(post_id):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM clients WHERE id = ?', (post_id,))
-    data = cursor.fetchall()
-    conn.close()
-    # Rendre le template HTML et transmettre les données
-    return render_template('read_data.html', data=data)
-
 @app.route('/consultation/')
 def ReadBDD():
     conn = sqlite3.connect('database.db')
@@ -87,17 +77,7 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-@app.route('/fiche_nom/', methods=['GET', 'POST'])
-def recherche_par_nom():
-    if request.method == 'POST':
-        nom = request.form['nom_client']
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM clients WHERE nom LIKE ?", ('%' + nom + '%',))
-        data = cursor.fetchall()
-        conn.close()
-        return render_template('search_results.html', data=data)
-    return render_template('search_client.html')
+
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
